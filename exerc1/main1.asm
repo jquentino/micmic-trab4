@@ -1,3 +1,7 @@
+;On linux, you could run this code with the following command:
+;$ nasm -felf64 main1.asm && ld main1.o && ./a.out
+;
+
 section .data
 ; color_img times 786486 db 0   ; Allocating space to store RGB image
 ; gray_img times 786486 db 0    ; Allocating space to store GRAY image
