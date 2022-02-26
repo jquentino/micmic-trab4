@@ -1,27 +1,21 @@
 ;On linux, you could run this code with the following command:
 ;$ nasm -felf64 main1.asm && ld main1.o && ./a.out
 ;
-
 section .data
-; color_img times 786486 db 0   ; Allocating space to store RGB image
-; gray_img times 786486 db 0    ; Allocating space to store GRAY image
-; bw_img times 786486 db 0      ; Allocating space to store BW image
 path_image_color db "lena_color.bmp", 0
 path_outimg_gray db  "lena_gray.bmp", 0
 len equ 786486
-; output_img_bw db  "/home/lrvnc/git-repos/micmic/trabalho4/bw.bmp", 0
 
 section .bss
 fd_out resb 1
 fd_in resb 1
 color_img resb len
 gray_img resb len
-; info resb len
 
 section	.text
-   global _start         ;must be declared for using gcc
+   global _start
 	
-_start:                    ; informa o linker sobre o procedimento de entrada
+_start:   
 
 ;Abrindo a imagem colorida
     mov     rax, 5                   ; chamada de sistema (sys_open)
@@ -32,29 +26,26 @@ _start:                    ; informa o linker sobre o procedimento de entrada
     mov     [fd_in], rax             ; salva o descrito do arquivo que retornou
 
 ;Lendo a imagem  e salvando em color_img 
-    mov     rax, 3            ; chamada de sistema (sys_read)
-    mov     rbx, [fd_in]      ; descritor do arquivo
-    mov     rcx, color_img    ; buffer que recebe os dados lidos
-    mov     rdx, len          ; numero de bytes
+    mov     rax, 3                   ; chamada de sistema (sys_read)
+    mov     rbx, [fd_in]             ; descritor do arquivo
+    mov     rcx, color_img           ; buffer que recebe os dados lidos
+    mov     rdx, len                 ; numero de bytes
     int     0x80
 
 ;Fecha o arquivo
-    mov     rax, 6            ; chamada de sistema (sys_close)
-    mov     rbx, [fd_in]      ; descritor do arquivo
+    mov     rax, 6                   ; chamada de sistema (sys_close)
+    mov     rbx, [fd_in]             ; descritor do arquivo
     int     0x80
 
 ;Copiar o cabeçalho para a imagem cinza
-    mov     rax, color_img      ;O erro pode setar aqui, color imag ja esta em rcx
-    ; mov     rbx, bw_img
+    mov     rax, color_img 
     mov     rcx, gray_img
     mov     r9, 0
 
 header_loop:
     mov     r8, [rax]
-    ; mov     [rbx], r8
     mov     [rcx], r8
     inc     rax
-    ; inc     rbx
     inc     rcx
     inc     r9
     cmp     r9, 47
