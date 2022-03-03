@@ -1,3 +1,5 @@
 *.a
 *.o
 *.out
+*.png
+*.pdf
