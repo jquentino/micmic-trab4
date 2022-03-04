@@ -98,3 +98,4 @@ turnblur_loop:
     ; encerra o programa
     mov     rax, 0            ; chamada de sistema (sys_exit)
     int     0x80
+    
